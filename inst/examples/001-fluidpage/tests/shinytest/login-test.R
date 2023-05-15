@@ -1,0 +1,7 @@
+app <- ShinyDriver$new("../../")
+app$snapshotInit("login-test")
+
+app$setInputs(`login-username` = "testuser")
+app$setInputs(`login-password` = "Password1!")
+app$setInputs(`login-login` = "click")
+app$snapshot()
