@@ -2,11 +2,11 @@
   "input": {
     "login-login": 0,
     "login-password": "",
-    "login-remember": true,
     "login-username": ""
   },
   "output": {
-
+    "content": null,
+    "login-error": null
   },
   "export": {
 
