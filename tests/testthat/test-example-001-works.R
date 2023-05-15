@@ -8,6 +8,6 @@ test_that("fluidpage works", {
   # Use compareImages=FALSE because the expected image screenshots were created
   # on a Mac, and they will differ from screenshots taken on the CI platform,
   # which runs on Linux.
-  appdir <- system.file(package = "rlogin", "examples/001-fluidpage")
+  appdir <- system.file(package = "rlogin", "examples/001-mysql-test")
   expect_pass(testApp(appdir, compareImages = FALSE))
 })
