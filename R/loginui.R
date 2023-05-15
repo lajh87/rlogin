@@ -83,23 +83,24 @@ loginServer <- function(
 
   values <- reactiveValues()
 
-  # on load get cookie sodium
-  observeEvent(cookies::get_cookie("sodium"),
-    {
-      if (is.null(cookies::get_cookie("sodium"))) {
-        return(NULL)
-      }
-
-      values$password_verified <- sodium::password_verify(readLines("hash.txt"), cookies::get_cookie("sodium"))
-    },
-    once = TRUE,
-    ignoreInit = FALSE,
-    ignoreNULL = FALSE
-  )
+  # # on load get cookie sodium
+  # observeEvent(cookies::get_cookie("sodium"),
+  #   {
+  #     if (is.null(cookies::get_cookie("sodium"))) {
+  #       return(NULL)
+  #     }
+  #
+  #     values$password_verified <- sodium::password_verify(readLines("hash.txt"), cookies::get_cookie("sodium"))
+  #   },
+  #   once = TRUE,
+  #   ignoreInit = FALSE,
+  #   ignoreNULL = FALSE
+  # )
 
 
   observeEvent(input$login, {
-    values$password_verified <- sodium::password_verify(readLines("hash.txt"), input$password)
+    # Run Login Function
+    values$password_verified <- verify_password(db, user_var, input$password)
 
     if (values$password_verified) {
       if (input$remember) {
