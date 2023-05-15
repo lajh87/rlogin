@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(rlogin)
 ```
 
-```{r}
+```{r out.extra = 'trim = {5cm 6.5cm 12.5cm 4cm}'}
 readLines(system.file("graphs/login-sequence.mermaid", package = "rlogin")) |>
   paste(collapse = "\n") |>
   DiagrammeR::DiagrammeR()
