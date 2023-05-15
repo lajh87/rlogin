@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      MYSQL_ADDON_HOST: ${{ secrets.MYSQL_ADDON_HOST }}
+      MYSQL_ADDON_DB: ${{ secrets.MYSQL_ADDON_DB }}
+      MYSQL_ADDON_USER: ${{ secrets.MYSQL_ADDON_USER }}
+      MYSQL_ADDON_PORT: ${{ secrets.MYSQL_ADDON_PORT }}
+      MYSQL_ADDON_PASSWORD: ${{ secrets.MYSQL_ADDON_PASSWORD }}
+      MYSQL_ADDON_URI: ${{ secrets.MYSQL_ADDON_URI }}
 
     steps:
       - uses: actions/checkout@v3
