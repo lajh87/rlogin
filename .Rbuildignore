@@ -5,3 +5,6 @@
 ^\.github$
 docs
 rsconnect
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
