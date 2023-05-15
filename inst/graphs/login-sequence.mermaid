@@ -1,0 +1,30 @@
+sequenceDiagram
+    User->>Browser: Visit Website
+    Server->>Browser: Get Cookie
+    alt Has Cookie
+      Note over Server,Database: Paragon Initiative Enterprises
+      Browser->>Server: Return Cookie
+      Server->>Database: Query Selector
+      Database->>Server: Return Hashed Validator
+      Server->>Server: Hash validator and check equal to stored hash
+      alt Valid Cookie
+        Server->>Browser: User Authenticated
+      else Invalid Cookie
+        Server->>Browser: Remove Cookie
+      end
+    else No Cookie
+      User->>Browser: Input Username and Password
+      Browser->>Server: Hash password
+      Server->>Database: Query user and hashed password
+      Database->>Server: Return hashed password
+      Server->Server: Check hashed password equal to stored hash
+      alt credentials accepted
+        Server->>Browser: Password Verified
+      else credentials rejected
+        Server->>Browser: Error Message
+      end
+      opt Remember Me
+        User-->>Browser: Check Remember Me
+        Server-->>Browser: Set Cookie
+      end
+    end
