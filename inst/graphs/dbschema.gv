@@ -1,0 +1,46 @@
+digraph mysql{
+  graph[rankdir = "LR"]
+
+  node [
+		style=filled
+		shape=rect
+		pencolor="#00000044" // frames color
+		fontname="Helvetica,Arial,sans-serif"
+		shape=plaintext
+	]
+	edge [
+		arrowsize=0.5
+		fontname="Helvetica,Arial,sans-serif"
+		labeldistance=3
+		labelfontcolor="#00000080"
+		penwidth=2
+		style=dotted // dotted style symbolizes data transfer
+	]
+
+  auth_users[
+    color="#88000022"
+    label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>auth_users</b><br/> </td> </tr>
+			<tr> <td align="left"  port = "userid" sides="ltr">userid</td> </tr>
+			<tr> <td align="left">username</td> </tr>
+			<tr> <td align="left">passwordhash</td> </tr>
+		</table>>
+    shape = "plain"
+    ]
+
+  auth_tokens[
+    color="#88000022"
+    label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>auth_tokens</b><br/> </td> </tr>
+			<tr> <td align="left">id</td> </tr>
+			<tr> <td align="left">selector</td> </tr>
+			<tr> <td align="left">hashedValidator</td> </tr>
+			<tr> <td align="left" port = "userid" sides="ltr">userid</td> </tr>
+			<tr> <td align="left">expires</td> </tr>
+		</table>>
+    shape = "plain"
+    ]
+
+    auth_users:userid -> auth_tokens:userid
+
+}
