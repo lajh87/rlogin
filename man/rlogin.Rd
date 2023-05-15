@@ -3,10 +3,13 @@
 \name{rlogin}
 \alias{rlogin}
 \alias{loginUI}
+\alias{logoutUI}
 \alias{loginServer}
 \title{Shiny Login Module}
 \usage{
 loginUI(id)
+
+logoutUI(id)
 
 loginServer(
   input,
@@ -36,6 +39,8 @@ Verify user credentials against authentication database.
 \section{Functions}{
 \itemize{
 \item \code{loginUI()}: loginUI
+
+\item \code{logoutUI()}: logoutUI
 
 \item \code{loginServer()}: loginServer
 
