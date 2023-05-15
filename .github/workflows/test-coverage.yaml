@@ -47,6 +47,9 @@ jobs:
         run: |
           if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+
       - name: Test coverage
         run: |
           covr::codecov(
