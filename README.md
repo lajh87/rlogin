@@ -2,6 +2,7 @@
 # rlogin
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/lajh87/rlogin/branch/master/graph/badge.svg)](https://app.codecov.io/gh/lajh87/rlogin?branch=master)
 <!-- badges: end -->
 
 The goal of rlogin is to ...
