@@ -48,7 +48,18 @@ setup_db_schema <- function(
   DBI::dbDisconnect(db)
 }
 
-
+#' Create a dummy user
+#'
+#' Create dummy user
+#'
+#' @inheritParams connect_mysql
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples \dontrun{
+#' create_dummy_user()
+#' }
 create_dummy_user <- function(
     dbname = Sys.getenv("MYSQL_ADDON_DB"),
     host = Sys.getenv("MYSQL_ADDON_HOST"),
@@ -57,17 +68,14 @@ create_dummy_user <- function(
     password = Sys.getenv("MYSQL_ADDON_PASSWORD")
 ){
 
-  db <- connect_mysql( dbname, host, port, user, password)
+  db <- connect_mysql(dbname, host, port, user, password)
 
-  tmp <- data.frame(userid = 1,
-             username = "lajh87@me.com",
-             passwordhash = sodium::password_store("Pushkin"),
-             stringsAsFactors = FALSE)
+  username <- "testuser"
+  passwordhash <- sodium::password_store("Password1!")
 
-  passwordhash <- sodium::password_store("Pushkin")
   q <- glue::glue("
-  INSERT INTO auth_users
-  VALUES (1, 'lajh87', '{passwordhash}');
+  INSERT INTO auth_users(username, passwordhash)
+  VALUES ('{username}', '{passwordhash}');
   ")
 
   DBI::dbExecute(db, q)
