@@ -2,7 +2,8 @@
 #'
 #' Create two tables in a MySQL database called auth_tokens, and auth_user
 #'
-#' @inheritParams connect_mysql
+#' @param db Database connection from \code{\link{connect_mysql}} or \code{\link{connect_sqlite}}.
+#' @param interactive Boolean TRUE/FALSE variable. Specifies whether in interactive session.
 #'
 #' @return NULL
 #' @export
@@ -11,16 +12,9 @@
 #' setup_db_schema()
 #' }
 setup_db_schema <- function(
-    dbname = Sys.getenv("MYSQL_ADDON_DB"),
-    host = Sys.getenv("MYSQL_ADDON_HOST"),
-    port = Sys.getenv("MYSQL_ADDON_PORT"),
-    user = Sys.getenv("MYSQL_ADDON_USER"),
-    password = Sys.getenv("MYSQL_ADDON_PASSWORD"),
+    db,
     interactive = TRUE
     ){
-
-  # Connect to database ----
-  db <- connect_mysql( dbname, host, port, user, password)
 
   # If any auth tables exist require user confirms overwrite ----
   if(interactive){
@@ -30,55 +24,18 @@ setup_db_schema <- function(
     }
   }
 
-  # Build User Table
+  # Build User Table ----
   DBI::dbExecute(db, "DROP TABLE IF EXISTS `auth_users`;")
   users_q <- readLines(system.file("sql/create_auth_users.SQL", package = "rlogin")) |>
     paste(collapse = "\n")
-
   DBI::dbExecute(db, users_q)
 
-  # Build Tokens Table
+  # Build Tokens Table ----
   DBI::dbExecute(db, "DROP TABLE IF EXISTS `auth_tokens`;")
   tokens_q <- readLines(system.file("sql/create_auth_tokens.SQL", package = "rlogin")) |>
     paste(collapse = "\n")
 
   DBI::dbExecute(db, tokens_q)
-
-  # Disconnect
-  DBI::dbDisconnect(db)
 }
 
-#' Create a dummy user
-#'
-#' Create dummy user
-#'
-#' @inheritParams connect_mysql
-#'
-#' @return NULL
-#' @export
-#'
-#' @examples \dontrun{
-#' create_dummy_user()
-#' }
-create_dummy_user <- function(
-    dbname = Sys.getenv("MYSQL_ADDON_DB"),
-    host = Sys.getenv("MYSQL_ADDON_HOST"),
-    port = Sys.getenv("MYSQL_ADDON_PORT"),
-    user = Sys.getenv("MYSQL_ADDON_USER"),
-    password = Sys.getenv("MYSQL_ADDON_PASSWORD")
-){
 
-  db <- connect_mysql(dbname, host, port, user, password)
-
-  username <- "testuser"
-  passwordhash <- sodium::password_store("Password1!")
-
-  q <- glue::glue("
-  INSERT INTO auth_users(username, passwordhash)
-  VALUES ('{username}', '{passwordhash}');
-  ")
-
-  DBI::dbExecute(db, q)
-  DBI::dbDisconnect(db)
-
-}

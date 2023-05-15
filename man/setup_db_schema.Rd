@@ -4,25 +4,12 @@
 \alias{setup_db_schema}
 \title{Setup db schema}
 \usage{
-setup_db_schema(
-  dbname = Sys.getenv("MYSQL_ADDON_DB"),
-  host = Sys.getenv("MYSQL_ADDON_HOST"),
-  port = Sys.getenv("MYSQL_ADDON_PORT"),
-  user = Sys.getenv("MYSQL_ADDON_USER"),
-  password = Sys.getenv("MYSQL_ADDON_PASSWORD"),
-  interactive = TRUE
-)
+setup_db_schema(db, interactive = TRUE)
 }
 \arguments{
-\item{dbname}{Database name}
+\item{db}{Database connection from \code{\link{connect_mysql}} or \code{\link{connect_sqlite}}.}
 
-\item{host}{Database host}
-
-\item{port}{Database post}
-
-\item{user}{Database username}
-
-\item{password}{Database password}
+\item{interactive}{Boolean TRUE/FALSE variable. Specifies whether in interactive session.}
 }
 \description{
 Create two tables in a MySQL database called auth_tokens, and auth_user

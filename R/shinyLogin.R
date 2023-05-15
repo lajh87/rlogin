@@ -3,6 +3,7 @@
 #' Verify user credentials against authentication database.
 #'
 #' @param id Namespace id
+#' @param db Database connection object
 #'
 #' @return A reactive values data frame with the following fields: \itemize{
 #'   \item{verified}{ Boolean, whether or not the user is verified.}
@@ -81,20 +82,14 @@ loginUI <- function(id) {
 #'@export
 logoutUI <- function(id){
   ns <- NS(id)
-  actionButton(ns("logout"), "Logout")
+  uiOutput(ns("logout"))
+
 }
 
 #'@describeIn rlogin loginServer
 #'@export
 loginServer <- function(
-    input, output, session,
-    dbname = Sys.getenv("MYSQL_ADDON_DB"),
-    host = Sys.getenv("MYSQL_ADDON_HOST"),
-    port = Sys.getenv("MYSQL_ADDON_PORT"),
-    user = Sys.getenv("MYSQL_ADDON_USER"),
-    password = Sys.getenv("MYSQL_ADDON_PASSWORD"),
-    token_auth_tbl = "token_auth",
-    user_auth_tbl = "user_auth"
+    input, output, session, db
     ) {
 
   ns <- session$ns
@@ -103,13 +98,9 @@ loginServer <- function(
   observeEvent(input$login, {
 
     values$password_verified <- verify_password(
+      db,
       input_username = input$username,
-      input_password = input$password,
-      dbname = Sys.getenv("MYSQL_ADDON_DB"),
-      host = Sys.getenv("MYSQL_ADDON_HOST"),
-      port = Sys.getenv("MYSQL_ADDON_PORT"),
-      user = Sys.getenv("MYSQL_ADDON_USER"),
-      password = Sys.getenv("MYSQL_ADDON_PASSWORD")
+      input_password = input$password
     )
 
     if(!values$password_verified)
@@ -126,6 +117,13 @@ loginServer <- function(
 
   output$error <- renderUI({
     values$error
+  })
+
+
+  output$logout <- renderUI({
+    if (req(values$password_verified)) {
+      actionButton(ns("logout"), "Logout")
+    }
   })
 
   observeEvent(input$logout,

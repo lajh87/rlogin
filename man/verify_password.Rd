@@ -5,29 +5,17 @@
 \title{Verify Password}
 \usage{
 verify_password(
+  db,
   input_username = input$username,
-  input_password = input$password,
-  dbname = Sys.getenv("MYSQL_ADDON_DB"),
-  host = Sys.getenv("MYSQL_ADDON_HOST"),
-  port = Sys.getenv("MYSQL_ADDON_PORT"),
-  user = Sys.getenv("MYSQL_ADDON_USER"),
-  password = Sys.getenv("MYSQL_ADDON_PASSWORD")
+  input_password = input$password
 )
 }
 \arguments{
+\item{db}{Database connection object}
+
 \item{input_username}{User inputted user name.}
 
 \item{input_password}{User inputted password.}
-
-\item{dbname}{Database name}
-
-\item{host}{Database host}
-
-\item{port}{Database post}
-
-\item{user}{Database username}
-
-\item{password}{Database password}
 }
 \value{
 Logical value of TRUE or FALSE depending on whether the password is verified.

@@ -23,7 +23,7 @@ connect_mysql <- function(
     password=Sys.getenv("MYSQL_ADDON_PASSWORD")
     ){
 
-  DBI::dbConnect(
+  pool::dbPool(
     RMySQL::MySQL(),
     dbname = dbname,
     host = host,
