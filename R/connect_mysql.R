@@ -1,12 +1,14 @@
-#' Title
+#' Connect MySQL
 #'
-#' @param dbname 
-#' @param host 
-#' @param port 
-#' @param user 
-#' @param password 
+#' Connect to a MySQL database
 #'
-#' @return
+#' @param dbname Database name
+#' @param host Database host
+#' @param port Database post
+#' @param user Database username
+#' @param password Database password
+#'
+#' @return A database connection object
 #' @export
 #'
 #' @examples

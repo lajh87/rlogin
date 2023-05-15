@@ -38,7 +38,7 @@ loginUI <- function(id) {
   cookies::add_cookie_handlers(tagList(
     shinyjs::useShinyjs(),
     div(
-      id = "login-panel",
+      id = ns("login-panel"),
       style = "width: 500px; max-width: 100%; margin: 0 auto;",
       div(
         class = "well",
@@ -68,11 +68,22 @@ loginUI <- function(id) {
             class = "btn-primary"
           )
         ),
-        checkboxInput(ns("remember"), "Remember Me", TRUE)
+        div(
+          style = "color: red;",
+          uiOutput(ns("error"))
+        )
       )
     )
   ))
 }
+
+#'@describeIn rlogin logoutUI
+#'@export
+logoutUI <- function(id){
+  ns <- NS(id)
+  actionButton(ns("logout"), "Logout")
+}
+
 #'@describeIn rlogin loginServer
 #'@export
 loginServer <- function(
@@ -86,35 +97,23 @@ loginServer <- function(
     user_auth_tbl = "user_auth"
     ) {
 
+  ns <- session$ns
   values <- reactiveValues()
 
-  # # on load get cookie sodium
-  # observeEvent(cookies::get_cookie("sodium"),
-  #   {
-  #     if (is.null(cookies::get_cookie("sodium"))) {
-  #       return(NULL)
-  #     }
-  #
-  #     values$password_verified <- sodium::password_verify(readLines("hash.txt"), cookies::get_cookie("sodium"))
-  #   },
-  #   once = TRUE,
-  #   ignoreInit = FALSE,
-  #   ignoreNULL = FALSE
-  # )
-
-
   observeEvent(input$login, {
-    # Run Login Function
-    values$password_verified <- verify_password(db, user_var, input$password)
 
-    if (values$password_verified) {
-      if (input$remember) {
-        cookies::set_cookie(
-          cookie_name = "sodium",
-          cookie_value = sodium::password_store(input$password)
-        )
-      }
-    }
+    values$password_verified <- verify_password(
+      input_username = input$username,
+      input_password = input$password,
+      dbname = Sys.getenv("MYSQL_ADDON_DB"),
+      host = Sys.getenv("MYSQL_ADDON_HOST"),
+      port = Sys.getenv("MYSQL_ADDON_PORT"),
+      user = Sys.getenv("MYSQL_ADDON_USER"),
+      password = Sys.getenv("MYSQL_ADDON_PASSWORD")
+    )
+
+    if(!values$password_verified)
+      values$error <- "Invalid Username or Password"
   })
 
   observeEvent(values$password_verified, {
@@ -125,20 +124,17 @@ loginServer <- function(
     }
   })
 
-  output$content <- renderUI({
-    if (req(values$password_verified)) {
-      actionButton("logout", "Logout")
-    }
+  output$error <- renderUI({
+    values$error
   })
 
   observeEvent(input$logout,
     {
-      cookies::remove_cookie("sodium")
-      values$password_verified <- FALSE
+     values$password_verified <- FALSE
     },
     ignoreNULL = TRUE,
     ignoreInit = TRUE
   )
 
-  observe(message(values$password_verified))
+  return(values)
 }
