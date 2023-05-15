@@ -8,7 +8,6 @@
 #'   \item{verified}{ Boolean, whether or not the user is verified.}
 #'   \item{message}{ A character string with any message from server to user.}
 #' }
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -29,6 +28,11 @@
 #'
 #' shinyApp(ui, server)
 #' }
+#' @name rlogin
+NULL
+
+#'@describeIn rlogin loginUI
+#'@export
 loginUI <- function(id) {
   ns <- NS(id)
   cookies::add_cookie_handlers(tagList(
@@ -69,7 +73,8 @@ loginUI <- function(id) {
     )
   ))
 }
-
+#'@describeIn rlogin loginServer
+#'@export
 loginServer <- function(
     input, output, session,
     dbname = Sys.getenv("MYSQL_ADDON_DB"),
