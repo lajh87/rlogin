@@ -4,11 +4,7 @@
 \alias{verify_password}
 \title{Verify Password}
 \usage{
-verify_password(
-  db,
-  input_username = input$username,
-  input_password = input$password
-)
+verify_password(db, input_username, input_password)
 }
 \arguments{
 \item{db}{Database connection object}
@@ -25,6 +21,6 @@ Function to verify hashed password.
 }
 \examples{
 \dontrun{
-verify_password()
+verify_password(db, input$username, input$password)
 }
 }

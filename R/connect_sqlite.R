@@ -5,7 +5,7 @@
 #' @return A SQLite database connection object
 #' @export
 #'
-#' @examples connect_sqlite()
+#' @examples \dontrun{connect_sqlite()}
 connect_sqlite <- function(){
   pool::dbPool(RSQLite::SQLite())
 }

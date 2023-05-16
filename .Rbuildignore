@@ -8,3 +8,4 @@ rsconnect
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+.nojekyll

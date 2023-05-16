@@ -9,10 +9,11 @@
 #' @export
 #'
 #' @examples \dontrun{
-#' setup_db_schema()
+#' db <- connect_sqlite()
+#' setup_db_schema(db)
 #' }
 setup_db_schema <- function(
-    db,
+    db = connect_sqlite(),
     interactive = TRUE
     ){
 

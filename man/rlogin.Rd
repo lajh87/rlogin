@@ -16,6 +16,12 @@ loginServer(input, output, session, db)
 \arguments{
 \item{id}{Namespace id}
 
+\item{input}{Shiny input parameter}
+
+\item{output}{Shiny output parameter}
+
+\item{session}{Shiny session parameter}
+
 \item{db}{Database connection object}
 }
 \value{

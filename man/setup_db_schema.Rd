@@ -4,7 +4,7 @@
 \alias{setup_db_schema}
 \title{Setup db schema}
 \usage{
-setup_db_schema(db, interactive = TRUE)
+setup_db_schema(db = connect_sqlite(), interactive = TRUE)
 }
 \arguments{
 \item{db}{Database connection from \code{\link{connect_mysql}} or \code{\link{connect_sqlite}}.}
@@ -16,6 +16,7 @@ Create two tables in a MySQL database called auth_tokens, and auth_user
 }
 \examples{
 \dontrun{
-setup_db_schema()
+db <- connect_sqlite()
+setup_db_schema(db)
 }
 }

@@ -14,6 +14,8 @@ Create dummy user
 }
 \examples{
 \dontrun{
-create_dummy_user()
+db <- connect_sqlite()
+setup_db_schema(db)
+create_dummy_user(db)
 }
 }

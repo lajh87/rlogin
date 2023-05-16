@@ -30,7 +30,7 @@ A database connection object
 Connect to a MySQL database
 }
 \examples{
-db <- connect_mysql()
-DBI::dbDisconnect(db)
-rm(db)
+\dontrun{
+  db <- connect_mysql()
+}
 }

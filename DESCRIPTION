@@ -26,5 +26,9 @@ Imports:
     glue,
     RMySQL,
     shinyjs,
-    sodium
+    sodium,
+    pool,
+    RSQLite,
+    shiny,
+    rlang
 URL: https://lajh87.github.io/rlogin/

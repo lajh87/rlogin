@@ -11,18 +11,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' verify_password()
+#' verify_password(db, input$username, input$password)
 #' }
-verify_password <- function(
-    db,
-    input_username = input$username,
-    input_password = input$password
-    ){
+verify_password <- function(db, input_username, input_password)
+  {
 
   password_hash <- db |>
     dplyr::tbl("auth_users") |>
-    dplyr::filter(username == input_username) |>
-    dplyr::pull(passwordhash)
+    dplyr::filter(.data$username == input_username) |>
+    dplyr::pull(.data$passwordhash)
 
   if(length(password_hash)==0) return(FALSE)
 

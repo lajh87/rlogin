@@ -2,8 +2,14 @@
 #'
 #' Verify user credentials against authentication database.
 #'
+#' @import shiny
+#' @importFrom rlang .data
+#'
 #' @param id Namespace id
 #' @param db Database connection object
+#' @param input Shiny input parameter
+#' @param output Shiny output parameter
+#' @param session Shiny session parameter
 #'
 #' @return A reactive values data frame with the following fields: \itemize{
 #'   \item{verified}{ Boolean, whether or not the user is verified.}

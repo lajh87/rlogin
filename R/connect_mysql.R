@@ -12,9 +12,9 @@
 #' @export
 #'
 #' @examples
-#' db <- connect_mysql()
-#' DBI::dbDisconnect(db)
-#' rm(db)
+#' \dontrun{
+#'   db <- connect_mysql()
+#' }
 connect_mysql <- function(
     dbname=Sys.getenv("MYSQL_ADDON_DB"),
     host=Sys.getenv("MYSQL_ADDON_HOST"),

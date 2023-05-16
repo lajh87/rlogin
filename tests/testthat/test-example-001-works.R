@@ -1,7 +1,7 @@
 library(shinytest)
 
 # This file is for testing the applications in the inst/ directory.
-test_that("fluidpage works", {
+test_that("mysql login works", {
   # Don't run these tests on the CRAN build servers
   skip_on_cran()
 

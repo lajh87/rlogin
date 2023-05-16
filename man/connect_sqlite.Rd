@@ -13,5 +13,5 @@ A SQLite database connection object
 Connect to a temporary SQLite database stored in memory
 }
 \examples{
-connect_sqlite()
+\dontrun{connect_sqlite()}
 }
