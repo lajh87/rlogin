@@ -68,6 +68,13 @@ loginUI <- function(id) {
           placeholder = "Enter password"
         ),
         div(
+          checkboxInput(
+            inputId = ns("remember"),
+            label = "Remember Me",
+            value = TRUE
+          )
+        ),
+        div(
           class = "text-center",
           actionButton(
             inputId = ns("login"),
@@ -101,6 +108,15 @@ loginServer <- function(
   ns <- session$ns
   values <- reactiveValues()
 
+  observeEvent(cookies::get_cookie("auth_token"), {
+    message(cookies::get_cookie("auth_token"))
+    values$userid <- get_auth_token(db, cookies::get_cookie("auth_token"))
+    values$password_verified <- is.numeric(values$userid)
+  }, ignoreInit = FALSE, ignoreNULL = FALSE, once = TRUE)
+
+  ## login and verify password
+  ## if password verified and remember me box check then set a cookie and
+  ##  send to database
   observeEvent(input$login, {
 
     values$password_verified <- verify_password(
@@ -109,8 +125,18 @@ loginServer <- function(
       input_password = input$password
     )
 
-    if(!values$password_verified)
+    if(values$password_verified){
+      if(input$remember){
+        userid <- db |> dplyr::tbl("auth_users") |>
+          dplyr::filter(username == input$username) |>
+          dplyr::pull(.data$userid)
+
+        set_auth_cookie(db, userid[1])
+      }
+    } else{
       values$error <- "Invalid Username or Password"
+    }
+
   })
 
   observeEvent(values$password_verified, {
@@ -124,7 +150,6 @@ loginServer <- function(
   output$error <- renderUI({
     values$error
   })
-
 
   output$logout <- renderUI({
     if (req(values$password_verified)) {

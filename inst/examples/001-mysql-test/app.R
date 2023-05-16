@@ -3,8 +3,14 @@ library(rlogin)
 
 pool <- connect_mysql()
 onStop(function(){pool::poolClose(pool)})
-setup_db_schema(pool, interactive = FALSE)
-create_dummy_user(pool)
+
+if(!all(c("auth_tokens", "auth_users") %in% DBI::dbListTables(pool))){
+  setup_db_schema(pool, interactive = FALSE)
+}
+
+if(pool |> dplyr::tbl("auth_users") |> dplyr::collect() |> nrow() == 0){
+  create_dummy_user(pool)
+}
 
 ui <- fluidPage(
   loginUI("login"),

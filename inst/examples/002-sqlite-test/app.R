@@ -1,4 +1,5 @@
 library(shiny)
+library(rlogin)
 
 pool <- connect_sqlite()
 onStop(function(){pool::poolClose(pool)})
