@@ -160,6 +160,12 @@ loginServer <- function(
   observeEvent(input$logout,
     {
      values$password_verified <- FALSE
+     values$error <- NULL
+     token <- cookies::get_cookie("auth_token")
+     if(!is.null(token)){
+       remove_token(db,token)
+       cookies::remove_cookie("auth_token")
+     }
     },
     ignoreNULL = TRUE,
     ignoreInit = TRUE

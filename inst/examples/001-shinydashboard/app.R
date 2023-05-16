@@ -2,7 +2,7 @@ library(shiny)
 library(shinydashboard)
 library(rlogin)
 
-pool <- connect_mysql()
+pool <- connect_db("SQLite", setup = TRUE, testuser = TRUE)
 onStop(function(){pool::poolClose(pool)})
 
 ui <- dashboardPage(
@@ -13,13 +13,14 @@ ui <- dashboardPage(
   ),
   dashboardSidebar(
     disable = TRUE,
-    sidebarMenu(
+    sidebarMenu(id = "tabs",
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+      menuItem("Widgets", tabName = "widgets", icon = icon("th"), selected = TRUE)
     )
   ),
   dashboardBody(
     shinyjs::useShinyjs(),
+    loginUI("login"),
     uiOutput("content")
   )
 )
@@ -33,10 +34,19 @@ server <- function(input, output, session) {
     db = pool
   )
 
+  # Display a logout message
+  output$logout <- renderMenu({
+    req(login$password_verified)
+    dropdownMenu(type = "notifications",
+                 badgeStatus = NULL,
+                 icon = icon("user-circle"),
+                 headerText = "You are logged in.",
+                 logoutUI("login"))
+  })
+
+  # Dashboard Content ----
   output$content <- renderUI({
-    if(!login$password_verified){
-      loginUI("login")
-    } else{
+    if(!login$password_verified) return(NULL)
 
       tabItems(
         tabItem(tabName = "dashboard",
@@ -56,8 +66,6 @@ server <- function(input, output, session) {
                 h2("Widgets tab content")
         )
       )
-    }
-
   })
 
   # When password is verified make the header and sidebar visible.
@@ -68,23 +76,17 @@ server <- function(input, output, session) {
               'document.querySelector("body > div > header > nav > a"). setAttribute("style", "display: block");')
       )
       shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
+      updateTabItems(session, "tabs", "dashboard")
     } else{
       shinyjs::runjs(
         paste('document.querySelector("body > div > header").setAttribute("style", "display: none");',
               'document.querySelector("body > div > header > nav > a"). setAttribute("style", "display: none");')
       )
       shinyjs::addClass(selector = "body", class = "sidebar-collapse")
+      updateTabItems(session, "tabs", "widgets")
     }
-  },ignoreInit = FALSE, ignoreNULL = FALSE)
+  },ignoreInit = FALSE, ignoreNULL = TRUE)
 
-  # Display a logout message
-  output$logout <- renderMenu({
-    dropdownMenu(type = "notifications",
-                 badgeStatus = NULL,
-                 icon = icon("user-circle"),
-                 headerText = "You are logged in.",
-                 logoutUI("login"))
-  })
 
   # Example Server Code ----
   set.seed(122)

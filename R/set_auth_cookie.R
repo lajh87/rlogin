@@ -27,10 +27,9 @@ set_auth_cookie <- function(db, userid){
   expires <- Sys.Date() + 90
   id <- db |> dplyr::tbl("auth_tokens") |> dplyr::collect() |> nrow() + 1
 
-
   q <- glue::glue(
-    "INSERT INTO auth_tokens(id, selector, hashedValidator, userid, expires) ",
-    "VALUE({id}, '{selector}', '{hashed_validator}', {userid}, '{expires}'); "
+    "INSERT INTO auth_tokens (id, selector, hashedValidator, userid, expires) ",
+    "VALUES({id}, '{selector}', '{hashed_validator}', '{userid}', '{expires}'); "
   )
 
   DBI::dbExecute(db, q)
@@ -79,6 +78,18 @@ get_auth_token <- function(db, token){
     return(userid)
   } else{
     cookies::remove_cookie("auth_token")
+    remove_token(db, token)
   }
+
+}
+
+remove_token <- function(db, token){
+  if(is.null(token)) return(NULL)
+
+  token_split <- stringr::str_split(token, ":") |> unlist()
+  selector_var <- token_split[1]
+
+  q <- glue::glue("DELETE FROM auth_tokens WHERE selector = '{selector_var}';")
+  DBI::dbExecute(db, q)
 
 }
