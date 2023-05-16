@@ -41,6 +41,7 @@ set_auth_cookie <- function(db, userid){
 #' Get token and cross reference against stored data
 #'
 #' @param db Database connection object
+#' @param token Authentication token saved as cookie in browser
 #'
 #' @return If authenticated then return verified userid
 #' @export

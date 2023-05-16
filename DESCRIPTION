@@ -1,6 +1,6 @@
 Package: rlogin
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Authenticated users and store remember me cookie
+Version: 0.1
 Authors@R: 
     person("Luke", "Heley", email = "lajh87@me.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0000-0269-4083"))
@@ -30,5 +30,6 @@ Imports:
     pool,
     RSQLite,
     shiny,
-    rlang
-URL: https://lajh87.github.io/rlogin/
+    rlang,
+    stringr
+URL: https://lajh87.github.io/rlogin/, https://github.com/lajh87/rlogin

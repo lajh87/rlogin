@@ -1,0 +1,27 @@
+{
+  "input": {
+    "login-login": 1,
+    "login-logout": 0,
+    "login-password": "Password1!",
+    "login-remember": true,
+    "login-username": "testuser"
+  },
+  "output": {
+    "login-error": null,
+    "login-logout": {
+      "html": "<button id=\"login-logout\" type=\"button\" class=\"btn btn-default action-button\">Logout<\/button>",
+      "deps": [
+
+      ]
+    },
+    "logout": {
+      "html": "<div id=\"login-logout\" class=\"shiny-html-output\"><\/div>",
+      "deps": [
+
+      ]
+    }
+  },
+  "export": {
+
+  }
+}

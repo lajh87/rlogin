@@ -8,6 +8,8 @@ get_auth_token(db, token)
 }
 \arguments{
 \item{db}{Database connection object}
+
+\item{token}{Authentication token saved as cookie in browser}
 }
 \value{
 If authenticated then return verified userid

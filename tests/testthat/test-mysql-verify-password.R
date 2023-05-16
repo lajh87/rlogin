@@ -1,8 +1,6 @@
-test_that("Verify Password", {
+test_that("MySQL - Verify Password", {
 
-  db <- connect_sqlite()
-  setup_db_schema(db, interactive = FALSE)
-  create_dummy_user(db)
+  db <- connect_db("MySQL", setup = TRUE, testuser = TRUE)
 
   input <- list(
     username = "testuser",
