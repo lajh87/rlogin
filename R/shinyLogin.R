@@ -109,7 +109,6 @@ loginServer <- function(
   values <- reactiveValues()
 
   observeEvent(cookies::get_cookie("auth_token"), {
-    message(cookies::get_cookie("auth_token"))
     values$userid <- get_auth_token(db, cookies::get_cookie("auth_token"))
     values$password_verified <- is.numeric(values$userid)
   }, ignoreInit = FALSE, ignoreNULL = FALSE, once = TRUE)
