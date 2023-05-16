@@ -34,10 +34,16 @@
     <loc>https://lajh87.github.io/rlogin/reference/create_dummy_user.html</loc>
   </url>
   <url>
+    <loc>https://lajh87.github.io/rlogin/reference/get_auth_token.html</loc>
+  </url>
+  <url>
     <loc>https://lajh87.github.io/rlogin/reference/index.html</loc>
   </url>
   <url>
     <loc>https://lajh87.github.io/rlogin/reference/rlogin.html</loc>
+  </url>
+  <url>
+    <loc>https://lajh87.github.io/rlogin/reference/set_auth_cookie.html</loc>
   </url>
   <url>
     <loc>https://lajh87.github.io/rlogin/reference/setup_db_schema.html</loc>
