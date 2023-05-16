@@ -6,8 +6,11 @@ pool <- connect_mysql()
 onStop(function(){pool::poolClose(pool)})
 
 ui <- dashboardPage(
-  header = dashboardHeader(title = "Dashboard",
-                           disable = TRUE),
+  header = dashboardHeader(
+    title = "Dashboard",
+    disable = TRUE,
+    dropdownMenuOutput("logout")
+  ),
   dashboardSidebar(
     disable = TRUE,
     sidebarMenu(
@@ -17,17 +20,7 @@ ui <- dashboardPage(
   ),
   dashboardBody(
     shinyjs::useShinyjs(),
-    tabItems(
-      tabItem(tabName = "dashboard",
-              loginUI("login"),
-              uiOutput("content")
-      ),
-
-      # Second tab content
-      tabItem(tabName = "widgets",
-              h2("Widgets tab content")
-      )
-    )
+    uiOutput("content")
   )
 )
 
@@ -40,30 +33,60 @@ server <- function(input, output, session) {
     db = pool
   )
 
+  output$content <- renderUI({
+    if(!login$password_verified){
+      loginUI("login")
+    } else{
+
+      tabItems(
+        tabItem(tabName = "dashboard",
+
+                fluidRow(
+                  box(plotOutput("plot1", height = 250)),
+
+                  box(
+                    title = "Controls",
+                    sliderInput("slider", "Number of observations:", 1, 100, 50)
+                  )
+                )
+        ),
+
+        # Second tab content
+        tabItem(tabName = "widgets",
+                h2("Widgets tab content")
+        )
+      )
+    }
+
+  })
+
+  # When password is verified make the header and sidebar visible.
   observeEvent(login$password_verified,{
-    shinyjs::addClass(selector = "body", class = "sidebar-collapse")
     if(login$password_verified){
       shinyjs::runjs(
-        paste('document.querySelector("body > div > header").setAttribute("style", "display: true");',
-              'document.querySelector("body > div > header > nav > a"). setAttribute("style", "display: true");')
+        paste('document.querySelector("body > div > header").setAttribute("style", "display: block");',
+              'document.querySelector("body > div > header > nav > a"). setAttribute("style", "display: block");')
       )
       shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
+    } else{
+      shinyjs::runjs(
+        paste('document.querySelector("body > div > header").setAttribute("style", "display: none");',
+              'document.querySelector("body > div > header > nav > a"). setAttribute("style", "display: none");')
+      )
+      shinyjs::addClass(selector = "body", class = "sidebar-collapse")
     }
   },ignoreInit = FALSE, ignoreNULL = FALSE)
 
-  output$content <- renderUI({
-
-    fluidRow(
-      box(plotOutput("plot1", height = 250)),
-
-      box(
-        title = "Controls",
-        sliderInput("slider", "Number of observations:", 1, 100, 50)
-      )
-    )
+  # Display a logout message
+  output$logout <- renderMenu({
+    dropdownMenu(type = "notifications",
+                 badgeStatus = NULL,
+                 icon = icon("user-circle"),
+                 headerText = "You are logged in.",
+                 logoutUI("login"))
   })
 
-
+  # Example Server Code ----
   set.seed(122)
   histdata <- rnorm(500)
 

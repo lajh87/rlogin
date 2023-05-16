@@ -30,7 +30,7 @@ set_auth_cookie <- function(db, userid){
 
   q <- glue::glue(
     "INSERT INTO auth_tokens(id, selector, hashedValidator, userid, expires) ",
-    "VALUE(id, '{selector}', '{hashed_validator}', {userid}, '{expires}'); "
+    "VALUE({id}, '{selector}', '{hashed_validator}', {userid}, '{expires}'); "
   )
 
   DBI::dbExecute(db, q)
