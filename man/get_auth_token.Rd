@@ -4,7 +4,7 @@
 \alias{get_auth_token}
 \title{Get Authentication Token}
 \usage{
-get_auth_token(db)
+get_auth_token(db, token)
 }
 \arguments{
 \item{db}{Database connection object}

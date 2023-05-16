@@ -126,8 +126,9 @@ loginServer <- function(
 
     if(values$password_verified){
       if(input$remember){
+        username_var <- input$username
         userid <- db |> dplyr::tbl("auth_users") |>
-          dplyr::filter(username == input$username) |>
+          dplyr::filter(.data$username == username_var) |>
           dplyr::pull(.data$userid)
 
         set_auth_cookie(db, userid[1])

@@ -10,6 +10,7 @@
 #'
 #' @examples \dontrun{set_auth_cookie(db, userid)}
 set_auth_cookie <- function(db, userid){
+
   selector <- sodium::random(6) |> sodium::bin2hex()
   validator <- sodium::random(32) |> sodium::bin2hex()
   token <- paste(selector, validator, sep  = ":")
@@ -29,7 +30,7 @@ set_auth_cookie <- function(db, userid){
 
   q <- glue::glue(
     "INSERT INTO auth_tokens(id, selector, hashedValidator, userid, expires) ",
-    "VALUE(id, {selector}, {hashed_validator}, {userid}, {expires}); "
+    "VALUE(id, '{selector}', '{hashed_validator}', {userid}, '{expires}'); "
   )
 
   DBI::dbExecute(db, q)
@@ -63,10 +64,16 @@ get_auth_token <- function(db, token){
     dplyr::filter(.data$selector == selector_var) |>
     dplyr::pull(.data$hashedValidator)
 
+  if(length(db_hashed_validator_var) ==0)
+    return(NULL) #escape
+
   userid <- db |>
     dplyr::tbl("auth_tokens") |>
     dplyr::filter(.data$selector == selector_var) |>
     dplyr::pull(.data$userid)
+
+  if(length(userid)==0)
+    return(NULL)
 
   if(db_hashed_validator_var == hashed_validator_var){
     return(userid)
